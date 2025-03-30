@@ -2,7 +2,7 @@ package app.client;
 
 import app.messages.commands.Command;
 import app.exceptions.UnavaluableServer;
-import app.messages.commands.Request;
+import app.messages.requests.Request;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -107,7 +107,7 @@ public class ClientConnectionManager {
         byte[] responseBytes = baos.toByteArray();
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(responseBytes))) {
             Command c = (Command) ois.readObject();
-            return c.getServerResponse();
+            return "a";//c.getServerResponse();
         }
     }
 }

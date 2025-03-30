@@ -1,6 +1,4 @@
-package app.messages.commands;
-
-import app.server.CollectionManager;
+package app.messages.requests;
 
 import java.io.Serializable;
 

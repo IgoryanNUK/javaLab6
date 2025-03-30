@@ -1,5 +1,7 @@
 package app.messages.commands;
 
+import app.messages.requests.Request;
+
 import java.io.Serializable;
 
 public interface ICommand extends Serializable {

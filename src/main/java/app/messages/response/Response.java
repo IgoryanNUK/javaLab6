@@ -1,4 +1,5 @@
-package app.messages.commands;
+package app.messages.response;
 
-public class Response {
+public interface Response {
+    ResponseType getType();
 }

@@ -3,11 +3,11 @@ package app.messages.commands;
 /**
  * Команда, выводящая информацию о коллекции.
  */
-public class Info extends Command {
-    {
-        name = "info";
-        description = "Выводит информацио о коллекции.";
-    }
+public class Info {//extends Command {
+//    {
+//        name = "info";
+//        description = "Выводит информацио о коллекции.";
+//    }
 
     /*public void execute(Application app, String[] pars, BufferedReader input) {
         if (pars.length != 1) throw new WrongCommand(name);
@@ -19,7 +19,7 @@ public class Info extends Command {
                 "\nколичество элементов: " + pm.getSize());
     }*/
 
-    @Override
+    //@Override
     public void execute() {
     }
  }

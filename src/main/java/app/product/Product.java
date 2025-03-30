@@ -87,12 +87,12 @@ public class Product implements Comparable<Product>, Printable {
     }
 
     public void setCoordinates(Coordinates coordinates) {
-        if (coordinates == null) throw new app.exceptions.UnexceptibleValue("coordinates");
+        if (coordinates == null) throw new app.exceptions.UnexceptableValue("coordinates");
         else this.coordinates = coordinates;
     }
 
     public void setPrice(float price) {
-        if (price <= 0) throw new app.exceptions.UnexceptibleValue("price");
+        if (price <= 0) throw new app.exceptions.UnexceptableValue("price");
         else this.price = Float.valueOf(price);
     }
 
@@ -102,7 +102,7 @@ public class Product implements Comparable<Product>, Printable {
             allPartNumbers.add(partNumber);
             this.partNumber = partNumber;
         } else {
-            throw new app.exceptions.UnexceptibleValue("partNumber");
+            throw new app.exceptions.UnexceptableValue("partNumber");
         }
     }
 
@@ -111,12 +111,12 @@ public class Product implements Comparable<Product>, Printable {
     }
 
     public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
-        if (unitOfMeasure == null) throw new app.exceptions.UnexceptibleValue("unitOfMasure");
+        if (unitOfMeasure == null) throw new app.exceptions.UnexceptableValue("unitOfMasure");
         else this.unitOfMeasure = unitOfMeasure;
     }
 
     public void setOwner(Person owner) {
-        if (owner == null) throw new app.exceptions.UnexceptibleValue("owner");
+        if (owner == null) throw new app.exceptions.UnexceptableValue("owner");
         else this.owner = owner;
     }
 

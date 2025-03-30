@@ -1,4 +1,42 @@
 package app.server;
 
+import app.exceptions.UnknownException;
+import app.product.Product;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.TreeSet;
+
 public class SavingManager {
+    private String filePath;
+    private static int numberOfSession = 1;
+
+    public SavingManager(String envVar) {
+        filePath = System.getenv(envVar);
+    }
+
+    /**
+     * Читает сохранённую в файл коллекцию.
+     *
+     * @return сохранённая коллекция
+     * @throws FileNotFoundException
+     */
+    public TreeSet<Product> readSaving() throws FileNotFoundException {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filePath))) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Product> productList = objectMapper.readValue(inputStreamReader, new TypeReference<>() {
+            });
+            return new TreeSet<>(productList);
+        } catch (FileNotFoundException f) {
+            throw f;
+        } catch (Exception e) {
+            filePath = filePath.replace(".", numberOfSession + ".");
+            numberOfSession++;
+            throw new UnknownException(e);
+        }
+    }
 }

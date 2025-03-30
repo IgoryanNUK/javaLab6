@@ -1,12 +1,11 @@
 package app.client;
 
 import app.messages.commands.Command;
-import app.messages.commands.Info;
 import app.exceptions.KnownException;
 import app.exceptions.NoSuchCommand;
 import app.exceptions.RecursiveCallError;
 import app.exceptions.UnknownException;
-import app.messages.commands.Request;
+import app.messages.requests.Request;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ public class CommandManager {
        this.app = app;
 
        //addCommand(new Help());
-       addCommand(new Info());
+       //addCommand(new Info());
 //       addCommand(new Show());
 //       addCommand(new Exit());
 //       addCommand(new Add(), new Update(), new RemoveById(), new Clear(), new Save(),

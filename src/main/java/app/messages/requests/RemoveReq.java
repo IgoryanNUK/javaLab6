@@ -1,4 +1,4 @@
-package app.messages.commands;
+package app.messages.requests;
 
 import app.product.Product;
 

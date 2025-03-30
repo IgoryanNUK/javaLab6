@@ -1,6 +1,6 @@
 package app.product;
 
-import app.exceptions.UnexceptibleValue;
+import app.exceptions.UnexceptableValue;
 
 import java.io.Serializable;
 
@@ -42,17 +42,17 @@ public class Person implements Printable, Serializable {
     public Country getNationality() {return nationality;}
 
     public void setName(String name) {
-        if (name == null || name.equals("")) throw new UnexceptibleValue("name");
+        if (name == null || name.equals("")) throw new UnexceptableValue("name");
         else this.name = name;
     }
 
     public void setHeight(float height) {
-        if (height <= 0) throw new UnexceptibleValue("height");
+        if (height <= 0) throw new UnexceptableValue("height");
         else this.height = height;
     }
 
     public void setEyeColor(Color eyeColor) {
-        if (eyeColor == null) throw new UnexceptibleValue("eyeColor");
+        if (eyeColor == null) throw new UnexceptableValue("eyeColor");
         else this.eyeColor = eyeColor;
     }
 
