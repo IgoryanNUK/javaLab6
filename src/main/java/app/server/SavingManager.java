@@ -5,9 +5,7 @@ import app.product.Product;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -36,6 +34,20 @@ public class SavingManager {
         } catch (Exception e) {
             filePath = filePath.replace(".", numberOfSession + ".");
             numberOfSession++;
+            throw new UnknownException(e);
+        }
+    }
+
+    public void save(TreeSet<Product> collection) throws FileNotFoundException {
+        try (OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(filePath))) {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            List<Product> productList = collection.stream().toList();
+            String jsonArray = objectMapper.writeValueAsString(productList);
+            fileWriter.write(jsonArray);
+        } catch (FileNotFoundException f) {
+            throw f;
+        } catch (Exception e) {
             throw new UnknownException(e);
         }
     }

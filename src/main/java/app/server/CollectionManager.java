@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 
 public class CollectionManager {
     private TreeSet<Product> products;
-    private SavingManager savingManager;
+    private final SavingManager savingManager;
     private final Date initDate = new Date();
     private Date lastChangeDate = new Date();
 
@@ -34,6 +34,7 @@ public class CollectionManager {
         } catch (Exception e) {
             //!!логгирование
             products = new TreeSet<>();
+            throw new UnknownException(e);
         }
 
     }
@@ -66,6 +67,7 @@ public class CollectionManager {
      */
     public void clear() {
         products.clear();
+        //save();
     }
 
     /**
@@ -75,7 +77,9 @@ public class CollectionManager {
      * @return true, если хотя бы один элемент был удалён из коллекции.
      */
     public boolean removeIf(Predicate<Product> p){
-        return products.removeIf(p);
+        boolean b = products.removeIf(p);
+        //save();
+        return b;
     }
 
 
@@ -85,30 +89,20 @@ public class CollectionManager {
      * @param p условие
      * @return массив продуктов
      */
-    public ArrayList<Product> getIf(Predicate<Product> p) {
-        ArrayList<Product> array = new ArrayList<>();
+    public List<Product> getIf(Predicate<Product> p) {
+        List<Product> array = new ArrayList<>();
         products.stream().filter(p).forEach(array::add);
 
-        return array;
+        return array.stream().toList();
     }
 
-    /**
-     * Сохраняет коллекцию в файл. Данные сохраняются в формате json.
-     *
-     * @param filePath абсолютный путь файла, в который сохраняется коллекция
-     */
-    public void saveCollection(String filePath) throws IOException {
-        OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(filePath));
-        ObjectMapper objectMapper = new ObjectMapper();
 
-        List<Product> productList = products.stream().toList();
-
-        String jsonArray = objectMapper.writeValueAsString(productList);
-
-        fileWriter.write(jsonArray);
-
-        fileWriter.close();
-
+    public void save() {
+        try {
+            savingManager.save(products);
+        } catch (Exception e) {
+            throw new UnknownException(e);
+        }
     }
 
     /**
