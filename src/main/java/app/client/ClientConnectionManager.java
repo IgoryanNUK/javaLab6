@@ -2,7 +2,11 @@ package app.client;
 
 import app.messages.commands.Command;
 import app.exceptions.UnavaluableServer;
+import app.messages.commands.RemoveById;
 import app.messages.requests.Request;
+import app.messages.response.MessageResp;
+import app.messages.response.Response;
+import app.messages.response.ResponseType;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -93,10 +97,11 @@ public class ClientConnectionManager {
             if (bytesRead != 0 && !isReading) {
                 isReading = true;
             }
-            if (bytesRead ==0 && isReading) {
+            if (bytesRead == 0 && isReading) {
                 count++;
+            } else {
+                System.out.println(count + " " + isReading);
             }
-            System.out.println(bytesRead);
             responseBuffer.flip();
             byte[] bytes = new byte[bytesRead];
             responseBuffer.get(bytes);
@@ -104,10 +109,18 @@ public class ClientConnectionManager {
             responseBuffer.clear();
         }
 
+
         byte[] responseBytes = baos.toByteArray();
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(responseBytes))) {
-            Command c = (Command) ois.readObject();
-            return "a";//c.getServerResponse();
+            Response r = (Response) ois.readObject();
+            return handleResponse(r);
         }
+    }
+
+    private String handleResponse(Response resp) {
+        return switch(resp.getType()) {
+            case ResponseType.MESSAGE -> ((MessageResp) resp).getMessage();
+            default -> "Ошибка чтения ответа";
+        };
     }
 }

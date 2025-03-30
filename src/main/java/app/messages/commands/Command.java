@@ -5,7 +5,6 @@ import java.io.Serializable;
 public abstract class Command implements ICommand, Serializable {
     protected String name = "command";
     protected String description = "";
-    protected String serverResponse = null;
 
     @Override
     public String getName() {return name;}

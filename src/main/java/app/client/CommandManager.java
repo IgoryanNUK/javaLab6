@@ -6,6 +6,7 @@ import app.exceptions.NoSuchCommand;
 import app.exceptions.RecursiveCallError;
 import app.exceptions.UnknownException;
 import app.messages.requests.Request;
+import app.messages.commands.*;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class CommandManager {
        //addCommand(new Help());
        //addCommand(new Info());
 //       addCommand(new Show());
-//       addCommand(new Exit());
+        addCommand(new Exit(), new RemoveById());
 //       addCommand(new Add(), new Update(), new RemoveById(), new Clear(), new Save(),
 //                new ExecuteScript(), new Exit(), new RemoveGreater(), new RemoveLower(),
 //                new History(), new RemoveByPartNumber(), new FilterStartsWithPartNumber(),
@@ -77,7 +78,7 @@ public class CommandManager {
                 throw new NoSuchCommand("command");
             } else {
                 addInHistory(stringCommand[0]);
-                return command.prepareRequest(stringCommand);
+                return command.prepareRequest(stringCommand, ioManager, app);
             }
         }
         return null;
