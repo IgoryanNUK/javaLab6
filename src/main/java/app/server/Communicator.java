@@ -1,10 +1,8 @@
 package app.server;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import app.messages.requests.Request;
@@ -21,7 +19,8 @@ public class Communicator {
     public static Request read(Socket sock) throws Exception {
         InputStream is = sock.getInputStream();
         ObjectInputStream ois = new ObjectInputStream(is);
-        return (Request) ois.readObject();
+        Request r = (Request) ois.readObject();
+        return r;
     }
 
     /**
@@ -33,10 +32,13 @@ public class Communicator {
      */
     public static void send(Response resp, Socket sock) throws Exception {
         OutputStream os = sock.getOutputStream();
+
         ObjectOutputStream ous = new ObjectOutputStream(os);
+
         ous.reset();
         ous.writeObject(resp);
         ous.flush();
+        ous.close();
     }
 
     /**
@@ -50,5 +52,18 @@ public class Communicator {
         OutputStream os = sock.getOutputStream();
         os.write(message.getBytes(StandardCharsets.UTF_8));
         os.flush();
+        os.close();
+    }
+
+    private static byte[] getSerSize(Object o) {
+        ByteArrayOutputStream bA = new ByteArrayOutputStream();
+        try(ObjectOutputStream oS = new ObjectOutputStream(bA)) {
+            oS.writeObject(o);
+        } catch (Exception e) {}
+
+        int length = bA.toByteArray().length;
+        System.out.println(length);
+
+        return ByteBuffer.allocate(4).putInt(length).array();
     }
 }

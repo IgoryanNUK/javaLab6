@@ -91,24 +91,13 @@ public class ClientConnectionManager {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         int bytesRead;
-        boolean isReading = false;
-        int count = 0;
-        while ((bytesRead = sock.read(responseBuffer)) != 0 || !isReading || count < 7) {
-            if (bytesRead != 0 && !isReading) {
-                isReading = true;
-            }
-            if (bytesRead == 0 && isReading) {
-                count++;
-            } else {
-                System.out.println(count + " " + isReading);
-            }
+        while ((bytesRead =sock.read(responseBuffer)) != -1) {
             responseBuffer.flip();
             byte[] bytes = new byte[bytesRead];
             responseBuffer.get(bytes);
             baos.write(bytes);
             responseBuffer.clear();
         }
-
 
         byte[] responseBytes = baos.toByteArray();
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(responseBytes))) {

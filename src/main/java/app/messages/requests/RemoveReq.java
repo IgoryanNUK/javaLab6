@@ -9,13 +9,13 @@ import java.util.function.Predicate;
  */
 public class RemoveReq implements Request {
     private final RequestType type = RequestType.REMOVE;
-    private final Predicate<Product> predicate;
+    private final Condition predicate;
 
     /**
      *
      * @param predicate условие удаления объекта коллекции
      */
-    public RemoveReq(Predicate<Product> predicate) {
+    public RemoveReq(Condition predicate) {
         this.predicate = predicate;
     }
 
