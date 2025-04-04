@@ -5,14 +5,17 @@ import app.exceptions.UnavaluableServer;
 import app.messages.commands.RemoveById;
 import app.messages.requests.Request;
 import app.messages.response.MessageResp;
+import app.messages.response.ProductsResp;
 import app.messages.response.Response;
 import app.messages.response.ResponseType;
+import app.product.Product;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.stream.Collectors;
 
 public class ClientConnectionManager {
     private int port;
@@ -109,6 +112,7 @@ public class ClientConnectionManager {
     private String handleResponse(Response resp) {
         return switch(resp.getType()) {
             case ResponseType.MESSAGE -> ((MessageResp) resp).getMessage();
+            case ResponseType.PRODUCTS -> ((ProductsResp) resp).getProducts().stream().map(Product::print).collect(Collectors.joining("\n"));
             default -> "Ошибка чтения ответа";
         };
     }

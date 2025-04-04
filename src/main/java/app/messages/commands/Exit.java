@@ -11,10 +11,15 @@ public class Exit extends Command {
         name = "exit";
         description = "Завершает приложение.";
     }
+    private final Client app;
+
+    public Exit(Client app) {
+        this.app = app;
+    }
 
 
     @Override
-    public Request prepareRequest(String[] args, UserIOManager ioManager, Client app) {
+    public Request prepareRequest(String[] args, UserIOManager ioManager) {
         PrintStream output = ioManager.getOutput();
 
         loop:

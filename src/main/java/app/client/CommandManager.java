@@ -12,26 +12,20 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 
 public class CommandManager {
-    private HashMap<String, Command> commands = new HashMap<>();
-    private ArrayDeque<String> history = new ArrayDeque<>(14);
+    private final HashMap<String, Command> commands = new HashMap<>();
+    private final ArrayDeque<String> history = new ArrayDeque<>(14);
     private Client app;
 
 
    public CommandManager(Client app) {
        this.app = app;
 
-       //addCommand(new Help());
-       //addCommand(new Info());
-//       addCommand(new Show());
-        addCommand(new Exit(), new RemoveById());
-//       addCommand(new Add(), new Update(), new RemoveById(), new Clear(), new Save(),
-//                new ExecuteScript(), new Exit(), new RemoveGreater(), new RemoveLower(),
-//                new History(), new RemoveByPartNumber(), new FilterStartsWithPartNumber(),
-//                new FilterGreaterThanUnitOfMeasure());
-//
-//       addCommand(new History());
-//       addCommand(new ExecuteScript(), new Add(), new RemoveById(), new Update(), new Save(), new RemoveGreater(),
-//                new RemoveLower());
+        addCommand(new Exit(app), new RemoveById(), new Show(),
+                new RemoveGreater(), new RemoveLower(), new RemoveByPartNumber(),
+                new Help(this), new Clear(), new Info(), new History(this),
+                new FilterStartsWithPN(), new FilterGreaterThanUOM());
+//       addCommand(new Add(), new Update(), new Save(),
+//                new ExecuteScript();
     }
 
     /**
@@ -78,7 +72,7 @@ public class CommandManager {
                 throw new NoSuchCommand("command");
             } else {
                 addInHistory(stringCommand[0]);
-                return command.prepareRequest(stringCommand, ioManager, app);
+                return command.prepareRequest(stringCommand, ioManager);
             }
         }
         return null;
@@ -98,5 +92,18 @@ public class CommandManager {
             history.removeFirst();
         }
         history.add(command);
+    }
+
+    /**
+     * Выводит информацию обо всех командах.
+     *
+     * @param io менеджер ввода-вывода
+     */
+    public void showCommands(UserIOManager io) {
+        commands.values().forEach(c -> io.println(c.getName() + " | " + c.getDescription()));
+    }
+
+    public void showHistory(UserIOManager io) {
+        history.forEach(io::println);
     }
 }

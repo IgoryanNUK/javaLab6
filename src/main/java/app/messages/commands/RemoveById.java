@@ -15,7 +15,7 @@ public class RemoveById extends Command {
     }
 
     @Override
-    public Request prepareRequest(String[] args, UserIOManager ioManager, Client app) {
+    public Request prepareRequest(String[] args, UserIOManager ioManager) {
         if (args.length != 2) {throw new WrongCommandFormat(name);}
         int id;
         try {

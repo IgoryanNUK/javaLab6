@@ -1,12 +1,13 @@
 package app.product;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 
 /**
  * Класс, описывающий продукт.
  */
-public class Product implements Comparable<Product>, Printable {
+public class Product implements Comparable<Product>, Printable, Serializable {
     private static int nextId = 1;//общий счётчик id для всех продуктов
     private static HashSet<Integer> idSet = new HashSet<>();
     private final int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
