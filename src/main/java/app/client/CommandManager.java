@@ -23,7 +23,8 @@ public class CommandManager {
         addCommand(new Exit(app), new RemoveById(), new Show(),
                 new RemoveGreater(), new RemoveLower(), new RemoveByPartNumber(),
                 new Help(this), new Clear(), new Info(), new History(this),
-                new FilterStartsWithPN(), new FilterGreaterThanUOM());
+                new FilterStartsWithPN(), new FilterGreaterThanUOM(),
+                new Add());
 //       addCommand(new Add(), new Update(), new Save(),
 //                new ExecuteScript();
     }

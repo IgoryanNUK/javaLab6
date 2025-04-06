@@ -7,7 +7,9 @@ public enum UnitOfMeasure implements Comparable<UnitOfMeasure> {
     LITERS("литры"),
     MILLIGRAMS("миллиграммы");
 
-    private String naming;
+    private final String naming;
+
+    public String getNaming() {return naming;}
 
     UnitOfMeasure(String naming) {
         this.naming = naming;
