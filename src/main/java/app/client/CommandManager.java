@@ -24,7 +24,8 @@ public class CommandManager {
                 new RemoveGreater(), new RemoveLower(), new RemoveByPartNumber(),
                 new Help(this), new Clear(), new Info(), new History(this),
                 new FilterStartsWithPN(), new FilterGreaterThanUOM(),
-                new Add(), new Update());
+                new Add(), new Update(),
+                new ExecuteScript(this));
 //
 //                new ExecuteScript();
     }
@@ -45,11 +46,16 @@ public class CommandManager {
      */
     public void handleCommand(UserIOManager ioManager) {
         try {
-            String[] commandRequest = ioManager.getInput().readLine().trim().split(" ");
-            Request req = getRequestByName(commandRequest, ioManager);
-            if (req!=null) {
-                ClientConnectionManager cm = new ClientConnectionManager(4027, "Igoryan-Laptop");
-                ioManager.getOutput().println(cm.askServer(req));
+            String commandRequest = ioManager.getInput().readLine();
+            if (commandRequest==null) {
+                app.stop();
+            } else {
+                String[] args = commandRequest.trim().split(" ");
+                Request req = getRequestByName(args, ioManager);
+                if (req != null) {
+                    ClientConnectionManager cm = new ClientConnectionManager(4027, "Igoryan-Laptop");
+                    ioManager.getOutput().println(cm.askServer(req));
+                }
             }
         } catch (StackOverflowError e) {
             throw new RecursiveCallError(e.getMessage());

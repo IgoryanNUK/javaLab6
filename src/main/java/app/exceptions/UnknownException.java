@@ -10,7 +10,6 @@ public class UnknownException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        exception.printStackTrace();
         return "Произошла неизвестная ошибка: " + exception.getMessage();
     }
 }

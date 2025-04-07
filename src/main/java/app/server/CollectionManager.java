@@ -103,18 +103,10 @@ public class CollectionManager {
         try {
             savingManager.save(products);
         } catch (FileNotFoundException e) {
-            throw new FileNotFound(savingManager.getPath());
+            throw new FileNotFound("сохранение", savingManager.getPath());
         }
     }
 
-    /**
-     * Заполнение коллекции сохранёнными данными.
-     *
-     * @param filePath абсолютный путь файла, содержащего сохранённые данные коллекции
-     */
-    public void readCollection(String filePath) throws FileNotFoundException {
-
-    }
 
     /**
      * Сообщает классу Product, какие id уже заняты.
