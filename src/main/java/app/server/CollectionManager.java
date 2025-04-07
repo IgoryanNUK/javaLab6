@@ -1,6 +1,7 @@
 package app.server;
 
 import app.exceptions.CorruptedFile;
+import app.exceptions.FileNotFound;
 import app.exceptions.UnknownException;
 import app.product.Product;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,6 +44,7 @@ public class CollectionManager {
     public void addProduct(Product p) {
         products.add(p);
         lastChangeDate = new Date();
+        save();
     }
 
     /** Возвращает тип коллекции. */
@@ -67,7 +69,7 @@ public class CollectionManager {
      */
     public void clear() {
         products.clear();
-        //save();
+        save();
     }
 
     /**
@@ -78,7 +80,7 @@ public class CollectionManager {
      */
     public boolean removeIf(Predicate<Product> p){
         boolean b = products.removeIf(p);
-        //save();
+        save();
         return b;
     }
 
@@ -100,8 +102,8 @@ public class CollectionManager {
     public void save() {
         try {
             savingManager.save(products);
-        } catch (Exception e) {
-            throw new UnknownException(e);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFound(savingManager.getPath());
         }
     }
 

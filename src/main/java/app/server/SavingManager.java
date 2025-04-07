@@ -39,6 +39,7 @@ public class SavingManager {
     }
 
     public void save(TreeSet<Product> collection) throws FileNotFoundException {
+
         try (OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(filePath))) {
             ObjectMapper objectMapper = new ObjectMapper();
 
@@ -51,4 +52,6 @@ public class SavingManager {
             throw new UnknownException(e);
         }
     }
+
+    public String getPath() {return filePath;}
 }

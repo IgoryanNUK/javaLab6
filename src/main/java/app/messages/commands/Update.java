@@ -2,6 +2,7 @@ package app.messages.commands;
 
 import app.client.UserIOManager;
 import app.exceptions.UnknownException;
+import app.exceptions.WrongCommandFormat;
 import app.messages.requests.AddReq;
 import app.messages.requests.Request;
 import app.messages.requests.RequestType;
@@ -10,21 +11,29 @@ import app.product.Person;
 import app.product.UnitOfMeasure;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import static app.client.EnterManager.*;
 
-public class Add extends Command {
+public class Update extends Command {
     {
-        name = "add";
-        description = "Добавляет продукт в коллекцию";
+        name = "update {id}";
+        description = "Обновляет все характеристики продукта по заданному id";
     }
 
     @Override
     public Request prepareRequest(String[] args, UserIOManager ioManager) {
+        if (args.length != 2) throw new WrongCommandFormat(name);
+
+        int id;
+        try {
+            id = Integer.parseInt(args[1]);
+        } catch(NumberFormatException f) { throw new WrongCommandFormat(name);}
 
         ObjectMapper oM = new ObjectMapper();
         ObjectNode jsonNode = oM.createObjectNode();
         boolean isScript = ioManager.isScript();
         try {
+            jsonNode.put("id", id);
             jsonNode.put("name", nameEnter(ioManager, "название продукта", isScript));
             Coordinates c = coordinatesEnter(ioManager, isScript);
             jsonNode.put("x", c.getX());
@@ -44,6 +53,7 @@ public class Add extends Command {
         } catch (Exception e) {
             throw new UnknownException(e);
         }
-        return new AddReq(RequestType.ADD, jsonNode.toString());
+
+        return new AddReq(RequestType.UPDATE, jsonNode.toString());
     }
 }

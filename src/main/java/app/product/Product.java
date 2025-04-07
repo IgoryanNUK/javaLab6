@@ -99,7 +99,8 @@ public class Product implements Comparable<Product>, Printable, Serializable {
 
     public void setPartNumber(String partNumber) {
         if (partNumber == null ||
-                ((!allPartNumbers.contains(partNumber)) && partNumber.length() <= 51 && partNumber.length() >= 23)) {
+                ((!allPartNumbers.contains(partNumber)) && partNumber.length() <= 51 && partNumber.length() >= 23) ||
+            partNumber.equals("null")) {
             allPartNumbers.add(partNumber);
             this.partNumber = partNumber;
         } else {
