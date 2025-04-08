@@ -1,5 +1,6 @@
 package app.server;
 
+import app.exceptions.FileNotFound;
 import app.exceptions.UnknownException;
 import app.product.Product;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,14 +24,14 @@ public class SavingManager {
      * @return сохранённая коллекция
      * @throws FileNotFoundException
      */
-    public TreeSet<Product> readSaving() throws FileNotFoundException {
+    public TreeSet<Product> readSaving() {
         try (InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filePath))) {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Product> productList = objectMapper.readValue(inputStreamReader, new TypeReference<>() {
             });
             return new TreeSet<>(productList);
         } catch (FileNotFoundException f) {
-            throw f;
+            throw new FileNotFound("чтение сохранения", f.getMessage());
         } catch (Exception e) {
             filePath = filePath.replace(".", numberOfSession + ".");
             numberOfSession++;

@@ -28,11 +28,11 @@ public class RequestHandler {
         RequestType type = req.getType();
 
         return switch (type) {
-            case RequestType.REMOVE -> removeIf((RemoveReq) req);
-            case RequestType.GET -> getIf((GetReq) req);
-            case RequestType.INFO -> getInfo();
-            case RequestType.ADD -> add((AddReq) req);
-            case RequestType.UPDATE -> update((AddReq) req);
+            case REMOVE -> removeIf((RemoveReq) req);
+            case GET -> getIf((GetReq) req);
+            case INFO -> getInfo();
+            case ADD -> add((AddReq) req);
+            case UPDATE -> update((AddReq) req);
             default -> new MessageResp("Ошибка чтения комманды");
         };
     }
@@ -188,7 +188,7 @@ public class RequestHandler {
             throw new RequestReadingException(RequestType.ADD, e);
         }
 
-        Product product = collection.getIf(p -> p.getId() == id).getFirst();
+        Product product = collection.getIf(p -> p.getId() == id).get(0);
         if (product == null) {
             return new MessageResp("Не нашёл продукта с указанным id(");
         }

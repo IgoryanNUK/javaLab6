@@ -45,7 +45,7 @@ public class ClientConnectionManager {
      */
     public ClientConnectionManager(int port, String hostName) throws Exception {
         this.port = port;
-        host = InetAddress.getByName(hostName);
+        host = InetAddress.getLocalHost();
     }
 
 
@@ -111,8 +111,8 @@ public class ClientConnectionManager {
 
     private String handleResponse(Response resp) {
         return switch(resp.getType()) {
-            case ResponseType.MESSAGE -> ((MessageResp) resp).getMessage();
-            case ResponseType.PRODUCTS -> ((ProductsResp) resp).getProducts().stream().map(Product::print).collect(Collectors.joining("\n"));
+            case MESSAGE -> ((MessageResp) resp).getMessage();
+            case PRODUCTS -> ((ProductsResp) resp).getProducts().stream().map(Product::print).collect(Collectors.joining("\n"));
             default -> "Ошибка чтения ответа";
         };
     }

@@ -2,18 +2,26 @@ package app.server;
 
 
 import app.messages.requests.Request;
+import app.messages.response.MessageResp;
 import app.messages.response.Response;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
-    private int port = 4027;
+    private final int port = 4027;
     private ServerSocket server;
     private ConnetionGetter connection;
     private CollectionManager collection;
     private RequestHandler handler;
-    private String envVar = "LAB5_PATH";
+    private final String envVar = "LAB5_PATH";
+    private final Logger logger = Logger.getLogger(Server.class.getName());
+    private final BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+    private boolean isRunning = true;
 
     public Server() {
         try {
@@ -21,7 +29,9 @@ public class Server {
             connection = new ConnetionGetter(server);
             collection = new CollectionManager(envVar);
             handler = new RequestHandler(collection);
+            logger.info("Start success");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Server start error: ", e);
         }
     }
 
@@ -32,18 +42,27 @@ public class Server {
     }
 
     private void run() {
-        while (true) {
+        while (isRunning) {
             try {
+                checkClosingRequest();
+
                 Socket sock = connection.getConnection();
                 if (sock.isBound()) {
-                    Request req = Communicator.read(sock);
-                    Response response = handler.handleRequest(req);
-                    Communicator.send(response, sock);
+                    try {
+                        Request req = Communicator.read(sock);
+                        Response response = handler.handleRequest(req);
+                        Communicator.send(response, sock);
+                    } catch (Exception e) {
+                        Communicator.send(new MessageResp("Произошла ошибка на сервере((((("),sock);
+                    }
                 }
             } catch (Exception e) {
-                System.out.println(server.isClosed());
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Ошибка в работе сервера: ", e);
             }
         }
+    }
+
+    private void checkClosingRequest() throws Exception{
+        if (console.ready()) isRunning = false;
     }
 }

@@ -10,7 +10,7 @@ public class ConnetionGetter {
         this.serverSocket = serverSocket;
     }
 
-    public Socket getConnection() throws Exception{
+    public Socket getConnection() throws Exception {
         try {
             return serverSocket.accept();
         } catch (Exception e) {

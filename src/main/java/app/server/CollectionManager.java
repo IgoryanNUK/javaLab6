@@ -17,6 +17,7 @@ public class CollectionManager {
     private final Date initDate = new Date();
     private Date lastChangeDate = new Date();
 
+
     /**
      * Создаёт виртуальную коллекцию.
      * Если получается, читает объекты коллекции из фала сохранения. Если нет, то создаёт пустую коллекцию и использует другой файл сохранения.
@@ -32,9 +33,9 @@ public class CollectionManager {
                 throw new CorruptedFile(System.getenv(envVar));
             }
             setIdsBusy();
-        } catch (Exception e) {
-            //!!логгирование
+        } catch (FileNotFound f) {
             products = new TreeSet<>();
+        } catch (Exception e) {
             throw new UnknownException(e);
         }
 
@@ -61,7 +62,7 @@ public class CollectionManager {
     public Product getProductById(int id) {
         List<Product> list =  products.stream().filter(e -> e.getId() == id).toList();
         if (list.isEmpty()) return null;
-        else return list.getFirst();
+        else return list.get(0);
     }
 
     /**
